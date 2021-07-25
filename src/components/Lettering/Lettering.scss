@@ -15,12 +15,12 @@
 
   &--small {
     font-size: 18px;
-    line-height: 1.4;
+    line-height: 1.5;
     font-weight: 400;
 
     @include sm {
       font-size: 20px;
-      line-height: unset;
+      line-height: 1.9;
       font-weight: 800;
     }
   }

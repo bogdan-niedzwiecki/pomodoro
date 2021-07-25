@@ -241,7 +241,105 @@ class App extends Component {
 
     return (
       <div className="app">
-        <div className="timer">
+        <div className="sizer">
+          <div className="timer">
+            <span className={pulse1} ref={this.pulse1}></span>
+            <span className={pulse2} ref={this.pulse2}></span>
+            <Lettering
+              tag="h2"
+              angleSpan={45}
+              angleOffset={-65}
+              radius={65}
+              active={this.state.activeInterval === "break"}
+              buttons={!this.state.isTimerActive}
+              intervalType="break"
+              incrementInterval={this.incrementInterval}
+              decrementInterval={this.decrementInterval}
+            >
+              Break
+            </Lettering>
+            <Lettering
+              tag="h2"
+              angleSpan={30}
+              angleOffset={-57}
+              radius={0}
+              active={this.state.activeInterval === "break"}
+              buttons={false}
+              small={true}
+            >
+              {this.formatInterval(this.state.break)}
+            </Lettering>
+            <Lettering
+              tag="h2"
+              angleSpan={45}
+              angleOffset={15}
+              radius={65}
+              active={this.state.activeInterval === "session"}
+              buttons={!this.state.isTimerActive}
+              intervalType="session"
+              incrementInterval={this.incrementInterval}
+              decrementInterval={this.decrementInterval}
+            >
+              Session
+            </Lettering>
+            <Lettering
+              tag="h2"
+              angleSpan={30}
+              angleOffset={27}
+              radius={0}
+              active={this.state.activeInterval === "session"}
+              buttons={false}
+              small={true}
+            >
+              {this.formatInterval(this.state.session)}
+            </Lettering>
+            <div className="timer__content">
+              <div className="timer__content-time">
+                {this.formatTimer(this.state.timer)}
+              </div>
+              <div className="timer__content-controls">
+                <button
+                  className="timer__content-controls-button"
+                  onClick={
+                    !this.state.isTimerActive &&
+                    !this.state.isPulseAcive.first &&
+                    !this.state.isPulseAcive.second
+                      ? this.startTimer
+                      : null
+                  }
+                  aria-label="Play"
+                >
+                  <FontAwesomeIcon
+                    icon={faPlay}
+                    className="timer__content-controls-button-icon"
+                  />
+                </button>
+                <button
+                  className="timer__content-controls-button"
+                  onClick={this.state.isTimerActive ? this.pauseTimer : null}
+                  aria-label="Pause"
+                >
+                  <FontAwesomeIcon
+                    icon={faPause}
+                    className="timer__content-controls-button-icon"
+                  />
+                </button>
+                <button
+                  className="timer__content-controls-button"
+                  onClick={this.resetTimer}
+                  aria-label="Stop"
+                >
+                  <FontAwesomeIcon
+                    icon={faStop}
+                    className="timer__content-controls-button-icon"
+                  />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* <div className="timer">
           <span className={pulse1} ref={this.pulse1}></span>
           <span className={pulse2} ref={this.pulse2}></span>
           <Lettering
@@ -333,7 +431,7 @@ class App extends Component {
               />
             </button>
           </div>
-        </div>
+        </div> */}
       </div>
     );
   }
