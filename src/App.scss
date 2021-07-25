@@ -66,9 +66,12 @@
 
     &-controls {
       &-button {
-        width: 30px;
-        height: 30px;
+        width: 40px;
+        height: 40px;
         border: none;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
         color: white;
         font-size: 20px;
         background-color: transparent;
@@ -80,11 +83,6 @@
           @include sm {
             font-size: inherit;
           }
-        }
-
-        @include sm {
-          width: 40px;
-          height: 40px;
         }
 
         &:not(:last-child) {

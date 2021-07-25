@@ -33,6 +33,7 @@
     font-weight: inherit;
     margin: 0;
     font-size: inherit;
+    pointer-events: none;
 
     &-char {
       position: absolute;
@@ -54,6 +55,8 @@
       color: white;
       cursor: pointer;
       transform: translateY(-3px);
+      height: 40px;
+      width: 40px;
 
       &-icon {
         font-size: 14px;
