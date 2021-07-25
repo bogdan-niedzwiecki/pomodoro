@@ -1,0 +1,84 @@
+@import "../../styles/tools.scss";
+
+.lettering {
+  transition: opacity 300ms ease-out;
+  opacity: 0.2;
+  font-size: 30px;
+  line-height: 2.7;
+  font-weight: 600;
+
+  @include sm {
+    font-size: 40px;
+    line-height: unset;
+    font-weight: 800;
+  }
+
+  &--small {
+    font-size: 18px;
+    line-height: 1.4;
+    font-weight: 400;
+
+    @include sm {
+      font-size: 20px;
+      line-height: unset;
+      font-weight: 800;
+    }
+  }
+
+  &--active {
+    opacity: 1;
+  }
+
+  &__string {
+    font-weight: inherit;
+    margin: 0;
+    font-size: inherit;
+
+    &-char {
+      position: absolute;
+      transform-origin: bottom center;
+      left: 50%;
+      bottom: 50%;
+    }
+  }
+
+  &__controls {
+    position: absolute;
+    transform-origin: bottom center;
+    left: 50%;
+    bottom: 50%;
+
+    &-button {
+      border: none;
+      background-color: transparent;
+      color: white;
+      cursor: pointer;
+      transform: translateY(-3px);
+
+      &-icon {
+        font-size: 14px;
+        @include sm {
+          font-size: 24px;
+        }
+      }
+    }
+  }
+}
+
+.fade-enter {
+  opacity: 0;
+}
+
+.fade-enter.fade-enter-active {
+  transition: opacity 300ms ease-out;
+  opacity: 1;
+}
+
+.fade-exit {
+  opacity: 1;
+}
+
+.fade-exit.fade-exit-active {
+  transition: opacity 300ms ease-out;
+  opacity: 0;
+}

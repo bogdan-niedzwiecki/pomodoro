@@ -1,0 +1,104 @@
+@import "./styles/tools.scss";
+
+.app {
+  background: linear-gradient(25deg, #d64c7f, #ee4758 50%);
+  height: 100vh;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.timer {
+  text-align: center;
+  border-radius: 50% !important;
+  border: 5px solid rgba($color: white, $alpha: 0.2);
+  width: 100%;
+  max-width: 400px;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  margin: 0 40px;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+
+  @include sm {
+    border-width: 10px;
+  }
+
+  &__pulse {
+    box-sizing: border-box;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+    transition: opacity 0.5s ease-out;
+    box-shadow: 0px 0px 0px 0px black;
+    opacity: 0.1;
+    transform: scale(1.05);
+    pointer-events: none;
+
+    &--active {
+      animation: pulse 2s ease-out infinite;
+    }
+
+    &--secondary {
+      opacity: 0.3;
+    }
+  }
+
+  &__time {
+    z-index: 1;
+    font-size: 50px;
+    font-weight: 100;
+    margin-bottom: 5px;
+
+    @include sm {
+      font-size: 80px;
+      margin-bottom: 10px;
+    }
+  }
+
+  &__controls {
+    z-index: 1;
+
+    &-button {
+      align-self: center;
+      width: 30px;
+      height: 30px;
+      border: none;
+      color: white;
+      font-size: 20px;
+      background-color: transparent;
+      cursor: pointer;
+
+      &-icon {
+        font-size: 14px;
+
+        @include sm {
+          font-size: inherit;
+        }
+      }
+
+      @include sm {
+        width: 40px;
+        height: 40px;
+      }
+
+      &:not(:last-child) {
+        margin-right: 5px;
+
+        @include sm {
+          margin-right: 15px;
+        }
+      }
+    }
+  }
+}
+
+@keyframes pulse {
+  100% {
+    box-shadow: 0px 0px 0px 50vh rgba($color: black, $alpha: 0);
+  }
+}
