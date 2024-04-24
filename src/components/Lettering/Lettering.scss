@@ -1,4 +1,4 @@
-@import "../../styles/tools.scss";
+@import "../../sass/main.scss";
 
 .lettering {
   transition: opacity 300ms ease-out;
@@ -7,7 +7,7 @@
   line-height: 2.7;
   font-weight: 600;
 
-  @include sm {
+  @include media(sm) {
     font-size: 40px;
     line-height: unset;
     font-weight: 800;
@@ -18,7 +18,7 @@
     line-height: 1.5;
     font-weight: 400;
 
-    @include sm {
+    @include media(sm) {
       font-size: 20px;
       line-height: 1.9;
       font-weight: 800;
@@ -60,7 +60,8 @@
 
       &-icon {
         font-size: 14px;
-        @include sm {
+
+        @include media(sm) {
           font-size: 24px;
         }
       }

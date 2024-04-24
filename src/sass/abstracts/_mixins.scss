@@ -1,0 +1,13 @@
+@mixin media($size) {
+  @if map-has-key($breakpoints, $size) {
+    @media (min-width: #{map-get($breakpoints, $size)}) {
+      @content;
+    }
+  } @else if str-length($size) == 0 {
+    @content;
+  } @else {
+    @media ($size) {
+      @content;
+    }
+  }
+}

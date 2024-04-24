@@ -1,67 +1,33 @@
 import { Component, createRef } from "react";
+import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay, faPause, faStop } from "@fortawesome/free-solid-svg-icons";
-import classNames from "classnames";
-import alert from "./assets/alert.wav";
-import Lettering from "./components/Lettering/Lettering";
+import Lettering from "@components/Lettering";
+import alert from "@assets/alert.wav";
 import "./App.scss";
+import { AppState, Interval, IntervalType } from "./App.types";
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.pulse1 = createRef();
-    this.pulse2 = createRef();
-    this.audio = new Audio(alert);
-  }
-
-  decrementTimerIntervalId;
-  firstPulseTimeoutId;
-  secondPulseTimeoutId;
-
-  state = {
+class App extends Component<{}, AppState> {
+  state: AppState = {
     break: 300,
     session: 1500,
     timer: 1500,
     isPulseAcive: { first: false, second: false },
-    activeInterval: "session",
+    activeInterval: Interval.Session,
     isTimerActive: false,
   };
+  private pulse1 = createRef<HTMLDivElement>();
+  private pulse2 = createRef<HTMLDivElement>();
+  private audio = new Audio(alert);
+  private decrementTimerIntervalId: ReturnType<typeof setTimeout> | undefined;
+  private firstPulseTimeoutId: ReturnType<typeof setTimeout> | undefined;
+  private secondPulseTimeoutId: ReturnType<typeof setTimeout> | undefined;
 
   componentWillUnmount() {
     clearInterval(this.decrementTimerIntervalId);
     clearTimeout(this.firstPulseTimeoutId);
     clearTimeout(this.secondPulseTimeoutId);
   }
-
-  startTimer = () => {
-    this.setState(
-      (state) => ({
-        ...state,
-        isTimerActive: true,
-        isPulseAcive: { first: false, second: false },
-      }),
-      () => {
-        this.pulse1.current.removeEventListener(
-          "animationiteration",
-          this.stopFirstPulse
-        );
-
-        this.pulse2.current.removeEventListener(
-          "animationiteration",
-          this.stopSecondPulse
-        );
-
-        if (this.state.timer <= 3) {
-          this.audio.currentTime = 3 - this.state.timer;
-          this.audio.play();
-        }
-      }
-    );
-
-    this.decrementTimerIntervalId = setInterval(this.decrementTimer, 1000);
-    this.firstPulseTimeoutId = setTimeout(this.activatePulse1, 1000);
-    this.secondPulseTimeoutId = setTimeout(this.activatePulse2, 2000);
-  };
 
   decrementTimer = () => {
     if (this.state.timer === 4) {
@@ -79,26 +45,40 @@ class App extends Component {
     }));
   };
 
-  activatePulse1 = () => {
-    this.setState((state) => ({
-      ...state,
-      isPulseAcive: { ...state.isPulseAcive, first: true },
-    }));
-  };
+  startTimer = () => {
+    this.setState(
+      (state) => ({
+        ...state,
+        isTimerActive: true,
+        isPulseAcive: { first: false, second: false },
+      }),
+      () => {
+        this.pulse1.current!.removeEventListener(
+          "animationiteration",
+          this.stopFirstPulse
+        );
 
-  activatePulse2 = () => {
-    this.setState((state) => ({
-      ...state,
-      isPulseAcive: { ...state.isPulseAcive, second: true },
-    }));
+        this.pulse2.current!.removeEventListener(
+          "animationiteration",
+          this.stopSecondPulse
+        );
+
+        if (this.state.timer <= 3) {
+          this.audio.currentTime = 3 - this.state.timer;
+          this.audio.play();
+        }
+      }
+    );
+
+    this.decrementTimerIntervalId = setInterval(this.decrementTimer, 1000);
+    this.firstPulseTimeoutId = setTimeout(this.startFirstPulse, 1000);
+    this.secondPulseTimeoutId = setTimeout(this.startSecondPulse, 2000);
   };
 
   pauseTimer = () => {
-    this.decrementTimerIntervalId = clearInterval(
-      this.decrementTimerIntervalId
-    );
-    this.firstPulseTimeoutId = clearTimeout(this.firstPulseTimeoutId);
-    this.secondPulseTimeoutId = clearTimeout(this.secondPulseTimeoutId);
+    clearInterval(this.decrementTimerIntervalId);
+    clearTimeout(this.firstPulseTimeoutId);
+    clearTimeout(this.secondPulseTimeoutId);
 
     if (this.state.timer <= 3) {
       this.audio.pause();
@@ -110,19 +90,87 @@ class App extends Component {
         isTimerActive: false,
       }),
       () => {
-        this.pulse1.current.addEventListener(
+        this.pulse1.current!.addEventListener(
           "animationiteration",
           this.stopFirstPulse,
           { once: true }
         );
 
-        this.pulse2.current.addEventListener(
+        this.pulse2.current!.addEventListener(
           "animationiteration",
           this.stopSecondPulse,
           { once: true }
         );
       }
     );
+  };
+
+  stopTimer = () => {
+    clearInterval(this.decrementTimerIntervalId);
+    clearTimeout(this.firstPulseTimeoutId);
+    clearTimeout(this.secondPulseTimeoutId);
+
+    if (this.state.timer <= 3) {
+      this.audio.pause();
+      this.audio.currentTime = 0;
+    }
+
+    this.setState(
+      (state) => ({
+        ...state,
+        break: 300,
+        session: 1500,
+        timer: 1500,
+        activeInterval: Interval.Session,
+        isTimerActive: false,
+      }),
+      () => {
+        this.pulse1.current!.addEventListener(
+          "animationiteration",
+          this.stopFirstPulse,
+          { once: true }
+        );
+
+        this.pulse2.current!.addEventListener(
+          "animationiteration",
+          this.stopSecondPulse,
+          { once: true }
+        );
+      }
+    );
+  };
+
+  incrementInterval = (interval: Interval) => {
+    this.setState((state) => ({
+      ...state,
+      [interval]: state[interval] === 3600 ? 60 : state[interval] + 60,
+      timer:
+        this.state.activeInterval === interval
+          ? state[interval] === 3600
+            ? 60
+            : state[interval] + 60
+          : state.timer,
+    }));
+  };
+
+  decrementInterval = (interval: Interval) => {
+    this.setState((state) => ({
+      ...state,
+      [interval]: state[interval] === 60 ? 3600 : state[interval] - 60,
+      timer:
+        this.state.activeInterval === interval
+          ? state[interval] === 60
+            ? 3600
+            : state[interval] - 60
+          : state.timer,
+    }));
+  };
+
+  startFirstPulse = () => {
+    this.setState((state) => ({
+      ...state,
+      isPulseAcive: { ...state.isPulseAcive, first: true },
+    }));
   };
 
   stopFirstPulse = () => {
@@ -132,6 +180,13 @@ class App extends Component {
         ...state.isPulseAcive,
         first: false,
       },
+    }));
+  };
+
+  startSecondPulse = () => {
+    this.setState((state) => ({
+      ...state,
+      isPulseAcive: { ...state.isPulseAcive, second: true },
     }));
   };
 
@@ -145,84 +200,20 @@ class App extends Component {
     }));
   };
 
-  resetTimer = () => {
-    this.decrementTimerIntervalId = clearInterval(
-      this.decrementTimerIntervalId
-    );
-    this.firstPulseTimeoutId = clearTimeout(this.firstPulseTimeoutId);
-    this.secondPulseTimeoutId = clearTimeout(this.secondPulseTimeoutId);
-
-    if (this.state.timer <= 3) {
-      this.audio.pause();
-      this.audio.currentTime = 0;
-    }
-
-    this.setState(
-      (state) => ({
-        ...state,
-        break: 300,
-        session: 1500,
-        timer: 1500,
-        activeInterval: "session",
-        isTimerActive: false,
-      }),
-      () => {
-        this.pulse1.current.addEventListener(
-          "animationiteration",
-          this.stopFirstPulse,
-          { once: true }
-        );
-
-        this.pulse2.current.addEventListener(
-          "animationiteration",
-          this.stopSecondPulse,
-          { once: true }
-        );
-      }
-    );
+  toggleInterval = (activeInterval: IntervalType) => {
+    return activeInterval === Interval.Session
+      ? Interval.Break
+      : Interval.Session;
   };
 
-  toggleInterval = (activeInterval) => {
-    if (activeInterval === "session") {
-      return "break";
-    } else {
-      return "session";
-    }
-  };
-
-  incrementInterval = (interval) => {
-    this.setState((state) => ({
-      ...state,
-      [interval]: state[interval] === 3600 ? 60 : state[interval] + 60,
-      timer:
-        this.state.activeInterval === interval
-          ? state[interval] === 3600
-            ? 60
-            : state[interval] + 60
-          : state.timer,
-    }));
-  };
-
-  decrementInterval = (interval) => {
-    this.setState((state) => ({
-      ...state,
-      [interval]: state[interval] === 60 ? 3600 : state[interval] - 60,
-      timer:
-        this.state.activeInterval === interval
-          ? state[interval] === 60
-            ? 3600
-            : state[interval] - 60
-          : state.timer,
-    }));
-  };
-
-  formatTimer = (seconds) => {
+  formatTimer = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
+
     return ("0" + mins).slice(-2) + ":" + ("0" + secs).slice(-2);
   };
 
-  formatInterval = (seconds) => {
+  formatInterval = (seconds: number) => {
     return Math.floor(seconds / 60) + " min";
   };
 
@@ -246,50 +237,50 @@ class App extends Component {
             <span className={pulse1} ref={this.pulse1}></span>
             <span className={pulse2} ref={this.pulse2}></span>
             <Lettering
-              tag="h2"
-              angleSpan={45}
+              as="h2"
+              angleSpan={7.5}
               angleOffset={-65}
               radius={65}
-              active={this.state.activeInterval === "break"}
+              active={this.state.activeInterval === Interval.Break}
               buttons={!this.state.isTimerActive}
-              intervalType="break"
+              intervalType={Interval.Break}
               incrementInterval={this.incrementInterval}
               decrementInterval={this.decrementInterval}
             >
               Break
             </Lettering>
             <Lettering
-              tag="h2"
-              angleSpan={30}
+              as="h3"
+              angleSpan={5}
               angleOffset={-57}
               radius={0}
-              active={this.state.activeInterval === "break"}
+              active={this.state.activeInterval === Interval.Break}
               buttons={false}
-              small={true}
+              small
             >
               {this.formatInterval(this.state.break)}
             </Lettering>
             <Lettering
-              tag="h2"
-              angleSpan={45}
+              as="h2"
+              angleSpan={7.5}
               angleOffset={15}
               radius={65}
-              active={this.state.activeInterval === "session"}
+              active={this.state.activeInterval === Interval.Session}
               buttons={!this.state.isTimerActive}
-              intervalType="session"
+              intervalType={Interval.Session}
               incrementInterval={this.incrementInterval}
               decrementInterval={this.decrementInterval}
             >
               Session
             </Lettering>
             <Lettering
-              tag="h2"
-              angleSpan={30}
+              as="h3"
+              angleSpan={5}
               angleOffset={27}
               radius={0}
-              active={this.state.activeInterval === "session"}
+              active={this.state.activeInterval === Interval.Session}
               buttons={false}
-              small={true}
+              small
             >
               {this.formatInterval(this.state.session)}
             </Lettering>
@@ -299,9 +290,10 @@ class App extends Component {
               </div>
               <div className="timer__content-controls">
                 <button
+                  disabled={this.state.isTimerActive}
                   className="timer__content-controls-button"
-                  onClick={!this.state.isTimerActive ? this.startTimer : null}
-                  aria-label="Play"
+                  onClick={this.startTimer}
+                  aria-label="start"
                 >
                   <FontAwesomeIcon
                     icon={faPlay}
@@ -309,9 +301,10 @@ class App extends Component {
                   />
                 </button>
                 <button
+                  disabled={!this.state.isTimerActive}
                   className="timer__content-controls-button"
-                  onClick={this.state.isTimerActive ? this.pauseTimer : null}
-                  aria-label="Pause"
+                  onClick={this.pauseTimer}
+                  aria-label="pause"
                 >
                   <FontAwesomeIcon
                     icon={faPause}
@@ -320,8 +313,8 @@ class App extends Component {
                 </button>
                 <button
                   className="timer__content-controls-button"
-                  onClick={this.resetTimer}
-                  aria-label="Stop"
+                  onClick={this.stopTimer}
+                  aria-label="stop"
                 >
                   <FontAwesomeIcon
                     icon={faStop}

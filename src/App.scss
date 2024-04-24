@@ -1,4 +1,4 @@
-@import "./styles/tools.scss";
+@import "./sass/main.scss";
 
 .app {
   background: linear-gradient(25deg, #d64c7f, #ee4758 50%);
@@ -23,7 +23,7 @@
   position: relative;
   padding-bottom: 100%;
 
-  @include sm {
+  @include media(sm) {
     box-shadow: 0px 0px 0px 10px rgba($color: white, $alpha: 0.2);
   }
 
@@ -58,7 +58,7 @@
       font-weight: 100;
       margin-bottom: 5px;
 
-      @include sm {
+      @include media(sm) {
         font-size: 80px;
         margin-bottom: 10px;
       }
@@ -80,15 +80,19 @@
         &-icon {
           font-size: 14px;
 
-          @include sm {
+          @include media(sm) {
             font-size: inherit;
           }
+        }
+
+        &[disabled] {
+          opacity: 0.3;
         }
 
         &:not(:last-child) {
           margin-right: 5px;
 
-          @include sm {
+          @include media(sm) {
             margin-right: 15px;
           }
         }
