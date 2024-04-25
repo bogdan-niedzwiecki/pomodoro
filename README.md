@@ -2,4 +2,4 @@
 
 🔥 Live: https://bn-pomodoro.netlify.app/
 
-#react #react-transition-group #typescript #vite #sass #lint #husky
+#react #react-transition-group #typescript #vite #vitest #sass #lint #husky
