@@ -234,8 +234,8 @@ class App extends Component<{}, AppState> {
       <div className="app">
         <div className="sizer">
           <div className="timer">
-            <span className={pulse1} ref={this.pulse1}></span>
-            <span className={pulse2} ref={this.pulse2}></span>
+            <span className={pulse1} ref={this.pulse1} aria-hidden="true" />
+            <span className={pulse2} ref={this.pulse2} aria-hidden="true" />
             <Lettering
               as="h2"
               angleSpan={7.5}
