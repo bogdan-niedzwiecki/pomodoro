@@ -46,7 +46,7 @@ class Lettering extends Component<LetteringProps> {
     });
 
     return (
-      <div className={lettering}>
+      <div className={lettering} data-testid={this.props.intervalType}>
         <CSSTransition
           nodeRef={this.decrementNodeRef}
           in={this.props.buttons}
@@ -66,6 +66,7 @@ class Lettering extends Component<LetteringProps> {
             }}
           >
             <button
+              data-testid="decrement"
               className="lettering__controls-button"
               onClick={this.handleDecrementInterval}
               aria-label="decrement"
@@ -115,6 +116,7 @@ class Lettering extends Component<LetteringProps> {
             }}
           >
             <button
+              data-testid="increment"
               className="lettering__controls-button"
               onClick={this.handleIncrementInterval}
               aria-label="increment"

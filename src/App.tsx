@@ -285,11 +285,12 @@ class App extends Component<{}, AppState> {
               {this.formatInterval(this.state.session)}
             </Lettering>
             <div className="timer__content">
-              <div className="timer__content-time">
+              <div className="timer__content-time" data-testid="timer">
                 {this.formatTimer(this.state.timer)}
               </div>
               <div className="timer__content-controls">
                 <button
+                  data-testid="start"
                   disabled={this.state.isTimerActive}
                   className="timer__content-controls-button"
                   onClick={this.startTimer}
@@ -301,6 +302,7 @@ class App extends Component<{}, AppState> {
                   />
                 </button>
                 <button
+                  data-testid="pause"
                   disabled={!this.state.isTimerActive}
                   className="timer__content-controls-button"
                   onClick={this.pauseTimer}
@@ -312,6 +314,7 @@ class App extends Component<{}, AppState> {
                   />
                 </button>
                 <button
+                  data-testid="stop"
                   className="timer__content-controls-button"
                   onClick={this.stopTimer}
                   aria-label="stop"
