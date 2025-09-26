@@ -1,3 +1,19 @@
+@import "tailwindcss";
+
+@theme {
+  --animate-pulse-c: pulse-c 2s ease-out infinite;
+}
+
+@keyframes pulse-c {
+  100% {
+    box-shadow: 0px 0px 0px 50vh rgba(0, 0, 0, 0);
+  }
+}
+
+@utility bg-gradient {
+  background: linear-gradient(25deg, #d64c7f, #ee4758 50%);
+}
+
 html {
   box-sizing: border-box;
 }

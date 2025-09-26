@@ -23,7 +23,6 @@
     /* Path aliases */
     "paths": {
       "@components/*": ["./src/components/*"],
-      "@sass/*": ["./src/sass/*"],
       "@assets/*": ["./src/assets/*"]
     }
   },

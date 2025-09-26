@@ -1,0 +1,49 @@
+@reference "../../index.css";
+
+.lettering {
+  @apply transition-opacity duration-300 ease-out opacity-20 text-[30px] leading-[2.7] font-semibold md:text-[40px] md:leading-[unset] md:font-extrabold;
+}
+
+.lettering--small {
+  @apply text-lg leading-6 font-normal md:text-xl md:leading-[1.9] md:font-extrabold;
+}
+
+.lettering--active {
+  @apply opacity-100;
+}
+
+.lettering__string {
+  @apply font-[inherit] m-0 text-[inherit] pointer-events-none;
+}
+
+.lettering__string-char {
+  @apply absolute origin-bottom left-1/2 bottom-1/2;
+}
+
+.lettering__controls {
+  @apply absolute origin-bottom left-1/2 bottom-1/2;
+}
+
+.lettering__controls-button {
+  @apply border-0 bg-transparent text-white cursor-pointer -translate-y-[3px] h-10 w-10;
+}
+
+.lettering__controls-button-icon {
+  @apply text-sm md:text-2xl;
+}
+
+.fade-enter {
+  @apply opacity-0;
+}
+
+.fade-enter.fade-enter-active {
+  @apply transition-opacity duration-300 ease-out opacity-100;
+}
+
+.fade-exit {
+  @apply opacity-100;
+}
+
+.fade-exit.fade-exit-active {
+  @apply transition-opacity duration-300 ease-out opacity-0;
+}

@@ -1,0 +1,46 @@
+@reference "./index.css";
+
+.app {
+  @apply h-screen text-white flex justify-center items-center overflow-hidden bg-gradient;
+}
+
+.sizer {
+  @apply w-full max-w-[400px] my-0 mx-10;
+}
+
+.timer {
+  @apply text-center rounded-full shadow-[0px_0px_0px_5px_rgba(255,255,255,0.2)] relative pb-[100%] md:shadow-[0px_0px_0px_10px_rgba(255,255,255,0.2)];
+}
+
+.timer__pulse {
+  @apply absolute left-0 h-full w-full rounded-full transition-opacity duration-500 ease-out opacity-10;
+  box-shadow: 0px 0px 0px 0px black;
+}
+
+.timer__pulse--secondary {
+  @apply opacity-30;
+}
+
+.timer__pulse--active {
+  @apply animate-pulse-c;
+}
+
+.timer__content {
+  @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full;
+}
+
+.timer__content-time {
+  @apply text-[50px] font-thin mb-[5px] md:text-[80px] md:mb-2.5;
+}
+
+.timer__content-controls-button {
+  @apply w-10 h-10 border-0 inline-flex justify-center items-center text-white text-xl bg-transparent cursor-pointer;
+}
+
+.timer__content-controls-button-icon {
+  @apply text-sm md:text-[inherit];
+}
+
+.timer__content-controls-button:not(:last-child) {
+  @apply mr-[5px] md:mr-[15px];
+}

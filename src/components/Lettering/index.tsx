@@ -3,8 +3,8 @@ import { CSSTransition } from "react-transition-group";
 import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faMinus } from "@fortawesome/free-solid-svg-icons";
-import "./Lettering.scss";
 import { IntervalType } from "../../App.types";
+import "./Lettering.css";
 
 interface LetteringProps {
   intervalType?: IntervalType;

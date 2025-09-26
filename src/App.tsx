@@ -4,8 +4,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay, faPause, faStop } from "@fortawesome/free-solid-svg-icons";
 import Lettering from "@components/Lettering";
 import alert from "@assets/alert.wav";
-import "./App.scss";
 import { AppState, Interval, IntervalType } from "./App.types";
+import "./App.css";
 
 class App extends Component<{}, AppState> {
   state: AppState = {
